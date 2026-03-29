@@ -4,7 +4,6 @@ An **IRCTC-style Train Reservation System** built with Spring Boot,
 featuring complete seat management with Confirmed, RAC, and Waiting
 List allocation logic — just like the real Indian Railway system!
 
-🔗 **Live Demo:** [http://YOUR_ORACLE_CLOUD_IP:8080](http://YOUR_ORACLE_CLOUD_IP:8080)
 📁 **GitHub:** [https://github.com/appasamy2004/train-reservation](https://github.com/appasamy2004/train-reservation)
 
 ---
@@ -275,7 +274,7 @@ WL/2 becomes WL/1 (renumbered)
 
 **Appasamy M**
 - 📧 appasamyarun715@gmail.com
-- 🔗 [LinkedIn](https://linkedin.com/in/yourprofile)
+- 🔗 [LinkedIn](https://linkedin.com/in/appasamy-m)
 - 💻 [GitHub](https://github.com/appasamy2004)
 - 🏆 [LeetCode](https://leetcode.com/yourprofile)
 
