@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Bookings</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">🚆 TrainBook</div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>🎫 My Bookings</h2>
+
+    <!-- Success/Error messages -->
+    <div th:if="${message}"
+         class="alert alert-success"
+         th:text="${message}">
+    </div>
+    <div th:if="${error}"
+         class="alert alert-error"
+         th:text="${error}">
+    </div>
+
+    <!-- No bookings -->
+    <div th:if="${#lists.isEmpty(bookings)}"
+         class="no-results">
+        <p>You have no bookings yet.</p>
+        <a th:href="@{/}" class="btn-primary">Book Now</a>
+    </div>
+
+    <!-- Bookings List -->
+    <div th:each="booking : ${bookings}"
+         class="booking-card"
+         th:classappend="${booking.bookingStatus.name()
+                         == 'CANCELLED'} ? 'cancelled'">
+
+        <div class="booking-header">
+            <div>
+                <strong>PNR: </strong>
+                <span th:text="${booking.pnrNumber}">PNR123</span>
+            </div>
+            <div class="booking-status"
+                 th:text="${booking.bookingStatus}"
+                 th:classappend="${booking.bookingStatus.name()
+                                 == 'CONFIRMED'} ? 'status-confirmed'
+                                 : 'status-other'">
+                CONFIRMED
+            </div>
+        </div>
+
+        <div class="booking-details">
+            <p>
+                <strong>Train: </strong>
+                <span th:text="${booking.schedule.train.trainName}">
+                </span>
+            </p>
+            <p>
+                <strong>Route: </strong>
+                <span th:text="${booking.schedule.train.sourceStation}">
+                </span>
+                →
+                <span th:text="${booking.schedule.train.destStation}">
+                </span>
+            </p>
+            <p>
+                <strong>Date: </strong>
+                <span th:text="${booking.schedule.journeyDate}"></span>
+            </p>
+            <p>
+                <strong>Passenger: </strong>
+                <span th:text="${booking.passengerName}"></span>
+            </p>
+            <p>
+                <strong>Seat: </strong>
+                <span th:text="${booking.seat != null}
+                               ? ${booking.seat.seatNumber}
+                               : 'Not Assigned'">
+                </span>
+            </p>
+            <p>
+                <strong>Class: </strong>
+                <span th:text="${booking.seatType.displayName}"></span>
+            </p>
+            <p>
+                <strong>Amount: </strong>
+                <span th:text="'₹' + ${booking.amountPaid}"></span>
+            </p>
+        </div>
+
+        <!-- Cancel button — only for active bookings -->
+        <div th:if="${booking.bookingStatus.name() != 'CANCELLED'}">
+            <form action="/booking/cancel" method="post">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+                <input type="hidden"
+                       name="pnr"
+                       th:value="${booking.pnrNumber}">
+                <button type="submit"
+                        class="btn-cancel"
+                        onclick="return confirm(
+                            'Cancel this booking?')">
+                    Cancel Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

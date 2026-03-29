@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Search Results</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">🚆 TrainBook</div>
+  <div class="nav-links">
+    <a th:href="@{/}">Home</a>
+    <a th:href="@{/user/bookings}">My Bookings</a>
+    <a th:href="@{/logout}">Logout</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Search Summary -->
+  <div class="search-summary">
+    <h2>
+      Trains from
+      <span th:text="${from}">Chennai</span> →
+      <span th:text="${to}">Mumbai</span>
+    </h2>
+    <p>Date: <strong th:text="${date}">2024-12-01</strong></p>
+  </div>
+
+  <!-- No Results -->
+  <div th:if="${#lists.isEmpty(schedules)}"
+       class="no-results">
+    <p>😔 No trains found for this route and date.</p>
+    <a th:href="@{/}" class="btn-primary">Search Again</a>
+  </div>
+
+  <!-- Train Results List -->
+  <div th:each="schedule : ${schedules}"
+       class="train-card">
+
+    <!-- Train Header -->
+    <div class="train-header">
+      <div>
+        <h3 th:text="${schedule.train.trainName}">
+          Train Name
+        </h3>
+        <span class="train-number"
+              th:text="${schedule.train.trainNumber}">
+                    12345
+                </span>
+      </div>
+      <div class="train-time">
+                <span th:text="${schedule.train.departureTime}">
+                    06:00
+                </span>
+        →
+        <span th:text="${schedule.train.arrivalTime}">
+                    22:00
+                </span>
+      </div>
+    </div>
+
+    <!-- Seat Availability per Class -->
+    <div class="class-grid">
+
+      <!-- Sleeper -->
+      <div class="class-card sleeper">
+        <div class="class-name">Sleeper (SL)</div>
+        <div class="class-price">₹250</div>
+        <div class="class-avail">Available</div>
+        <a th:href="@{/booking/select(scheduleId=${schedule.id})}"
+           class="btn-book">Book</a>
+      </div>
+
+      <!-- AC 3 Tier -->
+      <div class="class-card ac3">
+        <div class="class-name">AC 3 Tier (3A)</div>
+        <div class="class-price">₹600</div>
+        <div class="class-avail">Available</div>
+        <a th:href="@{/booking/select(scheduleId=${schedule.id})}"
+           class="btn-book">Book</a>
+      </div>
+
+      <!-- AC 2 Tier -->
+      <div class="class-card ac2">
+        <div class="class-name">AC 2 Tier (2A)</div>
+        <div class="class-price">₹900</div>
+        <div class="class-avail">Available</div>
+        <a th:href="@{/booking/select(scheduleId=${schedule.id})}"
+           class="btn-book">Book</a>
+      </div>
+
+      <!-- General -->
+      <div class="class-card general">
+        <div class="class-name">General (GN)</div>
+        <div class="class-price">₹100</div>
+        <div class="class-avail">Available</div>
+        <a th:href="@{/booking/select(scheduleId=${schedule.id})}"
+           class="btn-book">Book</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

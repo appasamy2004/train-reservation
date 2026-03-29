@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">🚆 TrainBook</div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/user/bookings}">My Bookings</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div th:if="${booking}"
+         class="confirm-card"
+         th:classappend="${booking.status.name() == 'CONFIRMED'}
+                         ? 'confirmed'
+                         : (${booking.status.name() == 'RAC'}
+                            ? 'rac' : 'waiting')">
+
+        <h2>🎫 Booking Confirmation</h2>
+
+        <!-- PNR Box -->
+        <div class="pnr-box">
+            PNR Number:
+            <strong th:text="${booking.pnrNumber}">PNR123</strong>
+        </div>
+
+        <!-- Status Badge -->
+        <div class="status-badge"
+             th:text="${booking.status}"
+             th:classappend="${booking.status.name() == 'CONFIRMED'}
+                             ? 'badge-confirmed'
+                             : 'badge-rac'">
+            CONFIRMED
+        </div>
+
+        <!-- Booking Details Table -->
+        <table class="details-table">
+            <tr>
+                <td>Train</td>
+                <td th:text="${booking.trainName}">Train</td>
+            </tr>
+            <tr>
+                <td>Journey Date</td>
+                <td th:text="${booking.journeyDate}">Date</td>
+            </tr>
+            <tr>
+                <td>Passenger</td>
+                <td th:text="${booking.passengerName}">Name</td>
+            </tr>
+            <tr>
+                <td>Class</td>
+                <td th:text="${booking.seatType}">Sleeper</td>
+            </tr>
+            <tr>
+                <td>Seat Number</td>
+                <td th:text="${booking.seatNumber}">S1-3</td>
+            </tr>
+            <tr>
+                <td>Berth Type</td>
+                <td th:text="${booking.berthType}">LOWER</td>
+            </tr>
+            <tr>
+                <td>Amount Paid</td>
+                <td th:text="'₹' + ${booking.amountPaid}">₹250</td>
+            </tr>
+        </table>
+
+        <!-- Status Message -->
+        <div class="status-message"
+             th:text="${booking.message}">
+            Your seat is confirmed!
+        </div>
+
+        <div class="action-buttons">
+            <a th:href="@{/user/bookings}"
+               class="btn-primary">
+                View My Bookings
+            </a>
+            <a th:href="@{/}" class="btn-secondary">
+                Book Another
+            </a>
+        </div>
+    </div>
+
+    <!-- If no booking data (direct URL access) -->
+    <div th:unless="${booking}" class="no-results">
+        <p>No booking data found.</p>
+        <a th:href="@{/}" class="btn-primary">Go Home</a>
+    </div>
+</div>
+
+</body>
+</html>

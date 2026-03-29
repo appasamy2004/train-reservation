@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Select Seat</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">🚆 TrainBook</div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Train Info -->
+    <div class="train-info-bar">
+        <h2 th:text="${schedule.train.trainName}">Train Name</h2>
+        <p>
+            <span th:text="${schedule.train.sourceStation}">SRC</span>
+            →
+            <span th:text="${schedule.train.destStation}">DEST</span>
+            | Date:
+            <strong th:text="${schedule.journeyDate}">Date</strong>
+        </p>
+    </div>
+
+    <!-- Availability Cards -->
+    <h3>Seat Availability</h3>
+    <div class="availability-grid">
+        <div th:each="entry : ${availability.available}"
+             class="avail-card">
+            <div class="class-label"
+                 th:text="${entry.key.displayName}">Class</div>
+            <div class="avail-count"
+                 th:text="${entry.value} + ' Available'">
+                50 Available
+            </div>
+            <div class="price"
+                 th:text="'₹' + ${entry.key.basePrice}">
+                ₹250
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Form -->
+    <div class="booking-form-card">
+        <h3>Passenger Details</h3>
+
+        <form action="/booking/book" method="post"
+              th:object="${bookingRequest}">
+
+            <!-- CSRF Protection -->
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <!-- ✅ Schedule ID — fixed -->
+            <input type="hidden"
+                   name="scheduleId"
+                   th:value="${schedule.id}">
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Passenger Name</label>
+                    <input type="text"
+                           th:field="*{passengerName}"
+                           placeholder="Full name"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number"
+                           th:field="*{passengerAge}"
+                           min="1" max="120"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select th:field="*{gender}">
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Class</label>
+                    <select th:field="*{seatType}">
+                        <option value="SLEEPER">Sleeper - ₹250</option>
+                        <option value="AC_3TIER">AC 3 Tier - ₹600</option>
+                        <option value="AC_2TIER">AC 2 Tier - ₹900</option>
+                        <option value="AC_FIRST">First AC - ₹1500</option>
+                        <option value="GENERAL">General - ₹100</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-book-now">
+                🎫 Book Now
+            </button>
+
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

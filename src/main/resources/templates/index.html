@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Train Reservation System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- ── Navigation Bar ── -->
+<nav class="navbar">
+    <div class="nav-brand">🚆 TrainBook</div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <!-- Show these links only if user is NOT logged in -->
+        <a th:href="@{/login}">Login</a>
+        <a th:href="@{/register}">Register</a>
+        <!-- Show these only if user IS logged in -->
+        <a th:href="@{/user/bookings}">My Bookings</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
+
+<!-- ── Hero Section ── -->
+<div class="hero">
+    <h1>Book Train Tickets Online</h1>
+    <p>Fast, Easy, Reliable — IRCTC Style Seat Management</p>
+
+    <!-- ── Search Form ── -->
+    <div class="search-box">
+        <h2>Search Trains</h2>
+        <form action="/search" method="get">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>From Station</label>
+                    <input type="text"
+                           name="from"
+                           placeholder="e.g. Chennai"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>To Station</label>
+                    <input type="text"
+                           name="to"
+                           placeholder="e.g. Mumbai"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>Journey Date</label>
+                    <input type="date"
+                           name="date"
+                           required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-search">
+                🔍 Search Trains
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ── Features Section ── -->
+<div class="features">
+    <div class="feature-card">
+        <span class="icon">🎫</span>
+        <h3>Easy Booking</h3>
+        <p>Book confirmed, RAC or Waiting List tickets instantly</p>
+    </div>
+    <div class="feature-card">
+        <span class="icon">💺</span>
+        <h3>Seat Selection</h3>
+        <p>Visual seat map with real-time availability</p>
+    </div>
+    <div class="feature-card">
+        <span class="icon">🔄</span>
+        <h3>Auto Queue</h3>
+        <p>RAC and Waiting List auto-promoted on cancellation</p>
+    </div>
+</div>
+
+</body>
+</html>
